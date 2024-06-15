@@ -58,7 +58,9 @@ for char in secret_message:
 
         if method_two:
             next_num = str( random.randrange( 1, 5 ) )
-            new_key = stationary_disk.index( next_num )
+            new_key = stationary_disk.index( next_num ) - k_offset
+            if new_key < 0:
+                new_key += movable_disk_len
             encrypted_message +=  movable_disk[ new_key ]
             k_offset = movable_disk_len - new_key
         else:
