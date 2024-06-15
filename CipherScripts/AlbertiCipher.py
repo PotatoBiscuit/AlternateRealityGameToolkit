@@ -5,6 +5,9 @@ stationary_disk_len = len( stationary_disk )
 movable_disk = "klnprtuz&xysomqihfdbaceg"
 movable_disk_len = len( movable_disk )
 
+stationary_disk = ''.join( random.sample( stationary_disk, stationary_disk_len ) )
+movable_disk = ''.join( random.sample( movable_disk, movable_disk_len ) )
+
 def get_encrypted_letter( char ):
     encrypt_char_index = stationary_disk.index(char.upper()) - k_offset
     if encrypt_char_index < 0:
@@ -86,7 +89,7 @@ for char in secret_message:
     iters_until_rotate -= 1
 
 print( "Stationary disk: "  + stationary_disk )
-print( "Movable disk: " + movable_disk )
+print( "Movable disk:    " + movable_disk )
 print()
 print( "Original Message: " + secret_message )
 print( "Encrypted Message: " + encrypted_message )
