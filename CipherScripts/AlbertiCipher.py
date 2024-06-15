@@ -30,21 +30,40 @@ parser.add_argument('-f', '--frequency',
                         default=10,
                         type=int,
                         help="Frequency with which to rotate the disk to a new index. Default = every 10 characters")
+parser.add_argument('-m2' '--method-two',
+                        dest="method_two",
+                        action="store_true",
+                        default=False,
+                        help="Use the advanced alberti cipher encoding method")
 
 args = parser.parse_args()
 
 secret_message = args.secret_message.replace(" ","").lower()
 frequency_rotate = args.frequency_rotate
+method_two = args.method_two
 
 encrypted_message = ""
 
 k_offset = 0
 iters_until_rotate = 0
+
+if method_two:
+    k_offset = random.randrange( 0, stationary_disk_len )
+    iters_until_rotate = frequency_rotate
+    encrypted_message += movable_disk[ movable_disk_len - k_offset ]
+
 for char in secret_message:
     if iters_until_rotate == 0:
         iters_until_rotate = frequency_rotate
-        k_offset = random.randrange( 0, stationary_disk_len )
-        encrypted_message += stationary_disk[ k_offset ]
+
+        if method_two:
+            next_num = str( random.randrange( 1, 5 ) )
+            new_key = stationary_disk.index( next_num )
+            encrypted_message +=  movable_disk[ new_key ]
+            k_offset = movable_disk_len - new_key
+        else:
+            k_offset = random.randrange( 0, stationary_disk_len )
+            encrypted_message += stationary_disk[ k_offset ]
     
     # Workaround for characters that were not in the original alberti cipher disks
     if char == 'h':
