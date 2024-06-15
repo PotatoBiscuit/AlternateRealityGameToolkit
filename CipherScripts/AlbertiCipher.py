@@ -83,5 +83,8 @@ for char in secret_message:
 
     iters_until_rotate -= 1
 
+print( "Stationary disk: "  + stationary_disk )
+print( "Movable disk: " + movable_disk )
+print()
 print( "Original Message: " + secret_message )
 print( "Encrypted Message: " + encrypted_message )
