@@ -8,7 +8,11 @@ movable_disk_len = len( movable_disk )
 stationary_disk = ''.join( random.sample( stationary_disk, stationary_disk_len ) )
 movable_disk = ''.join( random.sample( movable_disk, movable_disk_len ) )
 
-def get_encrypted_letter( char ):
+# Rotate array until k is at the start for ease of use
+kinitial = movable_disk.index('k')
+movable_disk = movable_disk[ kinitial: ] + movable_disk[ :kinitial ]
+
+def get_encrypted_letter( char, k_offset ):
     encrypt_char_index = stationary_disk.index(char.upper()) - k_offset
     if encrypt_char_index < 0:
         encrypt_char_index += movable_disk_len
@@ -51,7 +55,7 @@ k_offset = 0
 iters_until_rotate = 0
 
 if method_two:
-    k_offset = random.randrange( 0, stationary_disk_len )
+    k_offset = random.randrange( 1, stationary_disk_len + 1 )
     iters_until_rotate = frequency_rotate
     encrypted_message += movable_disk[ movable_disk_len - k_offset ]
 
@@ -72,24 +76,28 @@ for char in secret_message:
     
     # Workaround for characters that were not in the original alberti cipher disks
     if char == 'h':
-        encrypted_message += get_encrypted_letter( 'f' ) * 2
+        encrypted_message += get_encrypted_letter( 'f', k_offset ) * 2
     elif char == 'j':
-        encrypted_message += get_encrypted_letter( 'i' ) * 2
+        encrypted_message += get_encrypted_letter( 'i', k_offset ) * 2
     elif char == 'k':
-        encrypted_message += get_encrypted_letter( 'q' ) * 2
+        encrypted_message += get_encrypted_letter( 'q', k_offset ) * 2
     elif char == 'u':
-        encrypted_message += get_encrypted_letter( 'v' ) * 2
+        encrypted_message += get_encrypted_letter( 'v', k_offset ) * 2
     elif char == 'w':
-        encrypted_message += get_encrypted_letter( 'x' ) * 2
+        encrypted_message += get_encrypted_letter( 'x', k_offset ) * 2
     elif char == 'y':
-        encrypted_message += get_encrypted_letter( 'z' ) * 2
+        encrypted_message += get_encrypted_letter( 'z', k_offset ) * 2
     else:
-        encrypted_message += get_encrypted_letter( char )
+        encrypted_message += get_encrypted_letter( char, k_offset )
 
     iters_until_rotate -= 1
 
 print( "Stationary disk: "  + stationary_disk )
 print( "Movable disk:    " + movable_disk )
+if method_two:
+    print( "Index letter: " + stationary_disk[0] )
+else:
+    print( "Key letter: k" )
 print()
 print( "Original Message: " + secret_message )
 print( "Encrypted Message: " + encrypted_message )
