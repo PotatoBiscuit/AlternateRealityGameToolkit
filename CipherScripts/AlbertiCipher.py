@@ -37,7 +37,7 @@ parser.add_argument('-f', '--frequency',
                         default=10,
                         type=int,
                         help="Frequency with which to rotate the disk to a new index. Default = every 10 characters")
-parser.add_argument('-m2' '--method-two',
+parser.add_argument('-m2', '--method-two',
                         dest="method_two",
                         action="store_true",
                         default=False,
