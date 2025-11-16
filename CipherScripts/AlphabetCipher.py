@@ -1,6 +1,5 @@
 import argparse
 
-alphabet = "abcdefghijklmnopqrstuvwxyz"
 alphabet_len = 26
 
 parser = argparse.ArgumentParser(
@@ -30,7 +29,7 @@ encrypted_message = ""
 
 key_ind = 0
 for character in secret_message:
-    encrypted_message += alphabet[( ( ord( character ) - ascii_offset ) + ( ord( secret_key[key_ind] ) - ascii_offset ) ) % alphabet_len]
+    encrypted_message += chr((( ( ord(character) - ascii_offset ) + ( ord(secret_key[key_ind]) - ascii_offset ) ) % alphabet_len) + ascii_offset)
     key_ind = ( key_ind + 1 ) % secret_key_len
 
 print( "Original Message: " + secret_message )
