@@ -1,4 +1,4 @@
-import argparse, collections, random, sys
+import argparse, collections, csv, random, sys
 
 def find_polybius_char( matrix, character, size=6 ):
     for p in range( size ):
@@ -18,11 +18,9 @@ parser = argparse.ArgumentParser(
 )
 parser.add_argument('secret_message',
                         type=str,
-                        required=True,
                         help="Message to encipher")
 parser.add_argument('transposition_key',
                         type=str,
-                        required=True,
                         help="Determines the keyword to perform columnar transposition. MUST have unique characters")
 parser.add_argument('-p','--polybius-size',
                         dest='polybius_size',
@@ -30,6 +28,12 @@ parser.add_argument('-p','--polybius-size',
                         default="big",
                         required=False,
                         help="Default is 'big', small/big only. Associated with ADFGX/ADFGVX ciphers respectively")
+parser.add_argument('-s','--polybius-square',
+                        dest='polybius_square',
+                        type=str,
+                        default=None,
+                        required=False,
+                        help="Path to CSV file containing the polybius square. If not provided, a random square will be generated")
 args = parser.parse_args()
 
 # If small polybius square isn't specified, prepare for the big one (ADFGVX)
@@ -41,14 +45,31 @@ if args.polybius_size != "small":
 secret_message = args.secret_message.replace(" ","").lower()
 transposition_key = args.transposition_key.replace(" ","").lower()
 
-# Shuffle letter order for making a randomized polybius square
-random.shuffle( alphabet )
-polybius_matrix = [ [""]*polybius_matrix_size for i in range(polybius_matrix_size) ]
+# Load polybius square from CSV if provided, otherwise generate randomly
+if args.polybius_square:
+    with open(args.polybius_square, 'r') as f:
+        reader = csv.reader(f)
+        polybius_matrix = list(reader)
 
-# Assigned shuffled letters to polybius square
-for i in range( polybius_matrix_size ):
-    for j in range( polybius_matrix_size ):
-        polybius_matrix[i][j] = alphabet[ i*polybius_matrix_size + j ]
+    # Validate the polybius matrix size
+    if len(polybius_matrix) != polybius_matrix_size:
+        print(f"Error: Polybius square must have {polybius_matrix_size} rows, but got {len(polybius_matrix)}")
+        print(f"Make sure to specify '-p small' if you are using the smaller 5x5 polybius square format")
+        sys.exit(1)
+    for i, row in enumerate(polybius_matrix):
+        if len(row) != polybius_matrix_size:
+            print(f"Error: Row {i} must have {polybius_matrix_size} columns, but got {len(row)}")
+            print(f"Make sure to specify '-p small' if you are using the smaller 5x5 polybius square format")
+            sys.exit(1)
+else:
+    # Shuffle letter order for making a randomized polybius square
+    random.shuffle( alphabet )
+    polybius_matrix = [ [""]*polybius_matrix_size for i in range(polybius_matrix_size) ]
+
+    # Assigned shuffled letters to polybius square
+    for i in range( polybius_matrix_size ):
+        for j in range( polybius_matrix_size ):
+            polybius_matrix[i][j] = alphabet[ i*polybius_matrix_size + j ]
 
 # Match message to polybius square for step 1 of encryption
 transposition_key_len = len( transposition_key )
