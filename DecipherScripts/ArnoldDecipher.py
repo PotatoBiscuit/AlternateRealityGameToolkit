@@ -5,8 +5,7 @@ Decodes Arnold Cipher references (Page.Line.Word) from PDF files.
 Supports both "Commentaries on the Laws of England" and "Nathan Bailey's Dictionary"
 """
 
-import sys
-import re
+import sys, re, argparse
 
 # Try to import PDF libraries (prefer pdfplumber for better text extraction)
 PDF_LIBRARY = None
@@ -141,21 +140,26 @@ def decode_multiple_references(pdf_path, cipher_refs):
 
 
 def main():
-    if len(sys.argv) < 3:
-        print("Arnold Cipher Decoder")
-        print("\nUsage:")
-        print("  Single reference:")
-        print("    python ArnoldCipher.py <pdf_file> <page.line.word>")
-        print("  Multiple references:")
-        print("    python ArnoldCipher.py <pdf_file> <ref1> <ref2> <ref3> ...")
-        print("\nExamples:")
-        print("    python ArnoldCipher.py blackstone.pdf 120.9.7")
-        print("    python ArnoldCipher.py bailey.pdf 45.3.2 46.1.5 47.2.8")
-        print("\nFormat: Page.Line.Word (all 1-indexed)")
-        sys.exit(1)
+    parser = argparse.ArgumentParser(
+        prog='ArnoldDecipher',
+        description="""Decodes the Arnold Cipher. Encoded  words take the form of ###.##.## for Page.Line.Word respectively.
+                       Meant to work with shared reference material like a book, where you can flip to page ###, go to line ##,
+                       and pick out word ## to form part of the deciphered message.
 
-    pdf_path = sys.argv[1]
-    cipher_refs = sys.argv[2:]
+                       Historically reference books used for this cipher were "Commentaries on the Laws of England" by William
+                       Blackstone and "Nathan Bailey's Dictionary". Used by General Benedict Arnold in an attempt to surrender
+                       West Point to the British during the Revolutionary war. He did not succeed."""
+    )
+    parser.add_argument('reference_material',
+                            type=str,
+                            help="Pdf file to reference when decoding")
+    parser.add_argument('secret_message',
+                            type=str,
+                            help="Space separated encoded message like '125.34.3 50.2.3 323.1.4'")
+    args = parser.parse_args()
+
+    pdf_path = args.reference_material
+    cipher_refs = args.secret_message.split()
 
     try:
         # Decode all references
