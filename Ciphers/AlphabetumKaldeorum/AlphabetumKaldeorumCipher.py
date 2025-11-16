@@ -23,7 +23,7 @@ args = parser.parse_args()
 
 # Get the directory where this script is located
 script_dir = os.path.dirname(os.path.abspath(__file__))
-reference_image_path = os.path.join(script_dir, '..', 'Alphabetum_Kaldeorum.jpg')
+reference_image_path = os.path.join(script_dir, 'Alphabetum_Kaldeorum.jpg')
 
 # Load the reference image containing all symbols
 try:
