@@ -76,11 +76,7 @@ DEVANAGARI_ZERO = '\u0966'
 
 def add_syllable(consonant, vowel_power, syllables):
     vowel_mark = VOWELS[vowel_power]
-    syllable = "";
-    if vowel_power == 100:
-        syllable = normalize("NFKD", vowel_mark + consonant)
-    else:
-        syllable = normalize("NFKD", consonant + vowel_mark)
+    syllable = consonant + vowel_mark
     syllables.append( syllable )
 
 def number_to_aryabhata(number):

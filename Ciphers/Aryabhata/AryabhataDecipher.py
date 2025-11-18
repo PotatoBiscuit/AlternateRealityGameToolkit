@@ -72,9 +72,6 @@ def parse_syllables(text):
     """
     Parse Devanagari text into syllables (consonant + optional vowel mark).
 
-    Note: The 'i' vowel mark (ि) appears BEFORE the consonant in Devanagari,
-    while other vowel marks appear after. This function handles both cases.
-
     Returns:
         List of tuples (consonant, vowel_mark)
     """
@@ -88,43 +85,19 @@ def parse_syllables(text):
         if char == DEVANAGARI_ZERO:
             return [(DEVANAGARI_ZERO, '')]
 
-        # Check if current character is the 'i' vowel mark (comes BEFORE consonant)
-        if char == 'ि':
-            # Look ahead for the consonant
-            if i + 1 < len(text) and text[i + 1] in CONSONANTS:
-                consonant = text[i + 1]
-                vowel_mark = char  # Start with 'i' mark
-                i += 2  # Skip both the vowel mark and consonant
-
-                # Check for additional vowel marks AFTER the consonant (but NOT 'i')
-                while i < len(text):
-                    next_char = text[i]
-                    category = unicodedata.category(next_char)
-
-                    if category in VOWEL_MARK_CATEGORIES and next_char in VOWEL_MARKS and next_char != 'ि':
-                        vowel_mark += next_char
-                        i += 1
-                    else:
-                        break
-
-                syllables.append((consonant, vowel_mark))
-            else:
-                # 'i' mark without consonant, skip it
-                i += 1
-
         # Check if it's a consonant
-        elif char in CONSONANTS:
+        if char in CONSONANTS:
             consonant = char
             vowel_mark = ''
 
-            # Check for following vowel marks (but NOT 'i' which goes before consonants)
+            # Check for following vowel marks
             i += 1
             while i < len(text):
                 next_char = text[i]
                 category = unicodedata.category(next_char)
 
-                # If it's a vowel mark (excluding 'i' which precedes consonants), add it
-                if category in VOWEL_MARK_CATEGORIES and next_char in VOWEL_MARKS and next_char != 'ि':
+                # If it's a vowel mark, add it
+                if category in VOWEL_MARK_CATEGORIES and next_char in VOWEL_MARKS:
                     vowel_mark += next_char
                     i += 1
                 else:
