@@ -175,7 +175,6 @@ def main():
 
     try:
         aryabhata = number_to_aryabhata(args.number)
-        #aryabhata = normalize("NFC", aryabhata )
         print(f"Number: {args.number}")
         print(f"Aryabhata: {aryabhata}")
     except ValueError as e:
