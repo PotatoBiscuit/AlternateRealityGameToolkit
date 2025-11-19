@@ -14,7 +14,6 @@ System:
 """
 
 import argparse
-from unicodedata import normalize
 
 # Varga consonants (1-25) - used primarily for values 1-25
 VARGA_CONSONANTS = {
