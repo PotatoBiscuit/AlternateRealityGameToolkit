@@ -54,7 +54,8 @@ parser = argparse.ArgumentParser(
     description="""Atbash cipher - reverses the alphabet (A↔Z, B↔Y, etc.). Automatically detects Hebrew or Latin alphabet.
     The name Atbash comes from the first, last, second, and second to last Hebrew Letters \u05d0(Aleph) \u05ea(Taw) \u05d1(Bet) \u05e9(Shin).
     The bible occasionally makes use of this cipher to embed hidden meanings, and it's also found use in Jewish mysticism and
-    Kabbalah"""
+    Kabbalah.
+    This cipher is involutory, so you can run this script again on the output to get the original message"""
 )
 
 parser.add_argument('message',
