@@ -2,7 +2,7 @@
 """
 Arnold Cipher Encoder
 Encodes English words into Arnold Cipher references (Page.Line.Word) by finding them in PDF files.
-Supports both "Commentaries on the Laws of England" and "Nathan Bailey's Dictionary"
+Supports both "Commentaries on the Laws of England" and "Nathan Bailey's Dictionary".
 """
 
 import sys, re, argparse
@@ -180,7 +180,7 @@ def main():
     parser = argparse.ArgumentParser(
         prog='ArnoldEncipher',
         description="""Encodes words into Arnold Cipher references. Takes English words and finds them in a reference PDF,
-                       returning their location as ###.##.## for Page.Line.Word respectively.
+                       returning their location as ###.##.## for Page.Line.Word respectively. This is also known as a book cipher.
 
                        Meant to work with shared reference material like a book. The first occurrence of each word
                        in the PDF will be used.

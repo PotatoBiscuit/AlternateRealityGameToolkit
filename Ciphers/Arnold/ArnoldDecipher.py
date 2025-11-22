@@ -142,9 +142,9 @@ def decode_multiple_references(pdf_path, cipher_refs):
 def main():
     parser = argparse.ArgumentParser(
         prog='ArnoldDecipher',
-        description="""Decodes the Arnold Cipher. Encoded  words take the form of ###.##.## for Page.Line.Word respectively.
+        description="""Decodes the Arnold Cipher. Encoded words take the form of ###.##.## for Page.Line.Word respectively.
                        Meant to work with shared reference material like a book, where you can flip to page ###, go to line ##,
-                       and pick out word ## to form part of the deciphered message.
+                       and pick out word ## to form part of the deciphered message. This is also considered a book cipher.
 
                        Historically reference books used for this cipher were "Commentaries on the Laws of England" by William
                        Blackstone and "Nathan Bailey's Dictionary". Used by General Benedict Arnold in an attempt to surrender
